@@ -24,10 +24,8 @@ def delta_days(today):
     days_remaining = today.day
     payday = 14
     if payday != days_remaining:
-        print(payday - days_remaining)
-
-
-
+        days_remaining = payday - days_remaining
+        return days_remaining
 
 target_date = date(2022, 12, 14)
 todays_date = date.today()
