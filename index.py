@@ -1,4 +1,5 @@
 from datetime import date
+import datetime
 
 print("Please enter current bank balance:")
 bank_balance = int(input())
@@ -20,38 +21,32 @@ if expense_input == "no":
      expenses_sum.append(a)
 
 #Date data
+#payday is always assumed to be the 14th of each month
+todays_date = date.today()
 def delta_days(today):
+    global days_remaining
+    global payday
     days_remaining = today.day
     payday = 14
     if payday != days_remaining:
-        print(payday - days_remaining)
-
-
-
-
-target_date = date(2022, 12, 14)
-todays_date = date.today()
+        days_remaining = payday - days_remaining
+        return days_remaining
+    else: days_remaining = 0
 
 delta_days(todays_date)
 
-#returns days as int
-def days_remaining(target_date, todays_date):
-    i = target_date - todays_date
-    return i.days
-    
-days_remaining_int = days_remaining(target_date, todays_date)
-
 #add days to final cacluation if payday falls on a weekend
-weekend = target_date.isoweekday()
+day_of_week = todays_date + datetime.timedelta(payday-1)
+weekend = day_of_week.isoweekday()
 if weekend == 7:
- days_remaining_int = days_remaining_int + 1
+ days_remaining = days_remaining + 1
 elif weekend == 6:
- days_remaining_int = days_remaining_int + 2
+ days_remaining = days_remaining + 2
 else: pass
 
 #Final results
 def daily_budget(bank_balance):
-    print("Days remaining:", days_remaining_int)
-    print("Allowance per day:",(round((bank_balance - sum(expenses_sum)) / days_remaining_int, 2)))
+    print("Days remaining:", days_remaining)
+    print("Allowance per day:",(round((bank_balance - sum(expenses_sum)) / days_remaining, 2)))
     
 daily_budget(bank_balance)
